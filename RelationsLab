@@ -1,0 +1,102 @@
+#RELATIONS LAB
+use warnings;
+
+$input = $ARGV[0];
+if(@ARGV == 0 ) {
+	die "Please enter a file name, with .txt extension.\n"; #if no input, program ends
+}
+
+if( @ARGV >= 2) {
+	die "Too many file names. Please try again.\n";
+}
+
+#opens, reads, and closes text file. If incorrect text file, program closes
+
+open(INPUT, $input) or die "Could not find input file.\n";
+@lines = <INPUT>;
+close INPUT;
+
+$line1 = $lines[0];
+
+#need to split the arrays by spaces
+@A = split(" ", $line1);
+
+@joinedA = join(", ", @A);
+$lineSize = @A;
+#PRINTS ORIGINAL SET
+
+print "Set: {";
+print join(", ", @joinedA),"}\n";
+shift @lines;
+$count = 0;
+$size = @lines-1;
+
+#PRINTS RELATION SET
+print "Relation: {";
+foreach $newLine (@lines){
+	@new = split(" ", $newLine);
+	print "(";
+	print join(",", @new),")";
+	if ($count < $size){
+		print ",";
+	}
+	else{ last; }
+	$count++;
+}
+print "}\n";
+
+#CHECK FOR REFLEXIVE
+@reflex = ();
+$reflCount = 0;
+foreach $rel (@lines){
+	@reflex = split(" ", $rel);
+	$refA = $reflex[0];
+	$refB = $reflex[1];
+	#checks to make sure every element in the set is a pair in the relation
+	if ($refA eq $refB){
+		$reflCount++;
+	}
+	
+}
+
+#PRINTS IF REFLEXIVE
+if($reflCount == $lineSize){
+	print "Reflexive: Yes\n";
+}
+else {
+	print "Reflexive: No\n";
+}
+
+
+#CHECKS FOR SYMMETRY
+@symmetry = ();
+$symCount = 0;
+$symSize = @lines;
+foreach $sym (@lines){
+	chomp $sym;
+	@symmetry = split(" ", $sym);
+	$symA = $symmetry[0];
+	chomp $symA;
+	$symB = $symmetry[1];
+	chomp $symB;
+	$symCheck = "$symB $symA";
+	chomp $symCheck;
+	foreach $elem (@lines){
+		chomp $elem;
+		if($symCheck eq $elem){
+			$symCount++;
+		}
+	}
+}
+if ($symCount >= $symSize){
+		print "Symmetric: Yes\n";
+}
+else {
+	print "Symmetric: No\n";
+}
+
+
+
+
+
+
