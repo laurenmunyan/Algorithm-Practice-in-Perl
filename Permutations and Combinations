@@ -1,0 +1,96 @@
+use strict;
+use warnings;
+
+my $input = $ARGV[0];
+chomp $input;
+if(@ARGV == 0 ) {
+	die "Please enter a file name, with .txt extension.\n"; #if no input, program ends
+}
+
+#opens, reads, and closes text file. If incorrect text file, program closes
+
+open(INPUT, $input) or die "Filename was incorrect. Make sure to include .txt extension.\n";
+my @lines = <INPUT>;
+chomp @lines;
+close INPUT;
+
+#join everything from the file with commas
+my $w = join(',', @lines);
+#the \Q\E is so that you can use * without getting a quantified regex error
+#it makes it so * is just normal text
+my $star = "\Q***\E,";
+my @rice = split("$star", $w);
+chomp @rice;
+
+#creates a count to count the number of combinations
+my $count = 0;
+
+#stores the different sections into different variables
+my $riceR = $rice[0];
+chomp $riceR;
+my $meat = $rice[1];
+chomp $meat;
+my $eggs = $rice[2];
+chomp $eggs;
+my $gravy = $rice[3];
+chomp $gravy;
+
+#splits the sections inside the variables by commas
+my @r = split ',', $riceR;
+my @m = split ',', $meat;
+my @e = split ',', $eggs;
+my @g = split ',', $gravy;
+
+#goes through each element of each array and prints out
+#the combination of each element
+foreach my $ricesRice (@r){
+	chomp $ricesRice;
+	foreach my $meatMeat (@m){
+		chomp $meatMeat;
+		foreach my $eggEggs (@e) {
+			chomp $eggEggs;
+			foreach my $gra (@g){
+				chomp $gra;
+				print "$ricesRice rice, $meatMeat meat, $eggEggs eggs, $gra gravy \n";
+				$count++;
+			}
+		}
+	}
+}
+
+#prints out the number of loco mocos
+print "============================\n";
+print "$count loco mocos! Collect them all.\n";
+
+
+
+#TESTING FILES THAT I CREATED:
+
+#blue
+#red
+#green
+#yellow
+#***
+#grass
+#sky
+#lake
+#***
+#book
+#paper
+#***
+#bike
+#car
+#train
+#motorcycle
+
+#ANOTHER Test:
+#one
+#***
+#two
+#three
+#***
+#four
+#***
+#five
+#six
+
