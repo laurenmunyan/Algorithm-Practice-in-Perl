@@ -1,0 +1,79 @@
+use strict; 
+use warnings;
+
+my $input = $ARGV[0];
+if(@ARGV == 0 ) {
+	die "Please enter a file name.\n"; #if no input, program ends
+}
+
+#opens, reads, and closes text file. If incorrect text file, program closes
+my $filename = $input;
+open(INPUT, $filename) or die "Filename was incorrect.\n";
+my @lines = <INPUT>;
+close INPUT;
+
+#part 1 code:
+#my $string = "6 6 * 2 7 * - 2 /";
+
+#comment out below line (i.e. the join line) to test for part 1 variables
+my $string = join(' ',@lines); #converts array into string
+my @letnum = split("\n", $string);
+
+my @nums = ();
+
+my $count = 0;
+
+
+foreach my $l (@letnum){
+	print "input: $l\n";
+	my @array = split(" ", $l);
+
+  foreach my $m (@array){
+	  if($m eq "+"){
+		  my $b = pop @nums;
+		  chomp $b;
+		  my $a = pop @nums;
+		  chomp $a;
+		  my $c = ($a + $b);
+		  chomp $c;
+		  push @nums, $c;
+	     }
+	  elsif($m eq "-"){
+		  my $b = pop @nums;
+		  chomp $b;
+		  my $a = pop @nums;
+		  chomp $a;
+		  my $c = ($a - $b);
+		  chomp $c;
+		  push @nums, $c;
+	    }
+	  elsif($m eq "*"){
+		  my $b = pop @nums;
+		  chomp $b;
+		  my $a = pop @nums;
+		  chomp $a;
+		  my $c = ($a*$b);
+		  chomp $c;
+		  push @nums, $c;
+	  }
+	  elsif($m eq "/"){
+		  my $b = pop @nums;
+		  chomp $b;
+		  my $a = pop @nums;
+		  chomp $a;
+		  my $c = ($a/$b);
+		  chomp $c;
+		  push @nums, $c;
+	  }
+	  else {
+		  push @nums, $m;
+	  }
+	
+  }
+
+print "result: $nums[$count]\n";
+$count++;
+}
+
+
+
