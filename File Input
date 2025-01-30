@@ -1,0 +1,22 @@
+$input = @ARGV[0];
+if(@ARGV == 0 ) {
+	die "Please enter a file name.\n"; #if no input, program ends
+}
+
+#opens, reads, and closes text file. If incorrect text file, program closes
+$filename = $input;
+open(INPUT, $filename) or die "Filename was incorrect.\n";
+@lines = <INPUT>;
+close INPUT;
+
+$string = join('',@lines); #converts array into string
+@letnum = split(" ", $string);
+
+foreach $num (@letnum){
+	if ( $num =~ /^8$/ ){ #looks to see if string has that word in it; the ‘i’ at the end 
+	#makes it so that even if the word is capitalized then it’ll still catch it
+		$count++;
+	}
+}
+print "Found $count 8's.\n";
+
