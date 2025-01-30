@@ -1,0 +1,129 @@
+use warnings;
+
+$input = $ARGV[0];
+if(@ARGV == 0 ) {
+	die "Please enter a file name, with .txt extension.\n"; #if no input, program ends
+}
+
+if( @ARGV >= 2) {
+	die "Too many file names. Please try again.\n";
+}
+
+#opens, reads, and closes text file. If incorrect text file, program closes
+
+open(INPUT, $input) or die "Could not find input file.\n";
+@lines = <INPUT>;
+close INPUT;
+
+$line1 = $lines[0];
+$line2 = $lines[1];
+
+#$line1 "1, 10, 4";
+#need to split the arrays by spaces
+@A = split(" ", $line1);
+@B = split(" ", $line2);
+
+@joinedA = join(", ", @A);
+@joinedB = join(", ", @B);
+
+print "A = {@joinedA}\n";
+print "B = {@joinedB}\n";
+
+
+@matches = ( );
+@union = ();
+@intersectA_B = ();
+@intersectB_A = ();
+@intersectB_A = ();
+@timesAxB = ();
+@timesBxA = ();
+
+foreach $letA (@A) {
+	foreach $letB (@B) {
+		if( $letB =~ /$letA/ ){
+			$letC = $letA;
+			push @matches, $letC;
+		}
+		
+	}
+}
+
+#prints intersection
+$n = @matches;
+if( $n == 0) {
+	print "A intersect B = {}\n";
+}
+else{
+	print "A intersect B = {";
+	print join(", ", @matches),"}\n";
+}
+
+#prints union
+foreach $word (@A){
+	push @union, $word; 
+}
+foreach $wordB (@B){
+	if(!($wordB ~~ @union)){
+		push @union, $wordB;
+	}
+}
+
+print "A union B = {";
+print join(", ", @union),"}\n";
+
+
+#finds and prints set difference A-B
+foreach $a (@A){
+	foreach $b (@B){
+		if(!($a ~~ @B)){
+			push @intersectA_B, $a;
+		}
+		if($a ~~ @intersectA_B){
+			last
+		}
+	}
+}
+
+print "A - B = {";
+print join(", ", @intersectA_B),"}\n";
+
+#finds and prints set difference B - A
+foreach $varB (@B){
+	foreach $varA (@A){
+		if(!($varB ~~ @A)){
+			push @intersectB_A, $varB;
+		}
+		if($varB ~~ @intersectB_A){
+			last
+		}
+	}
+}
+
+print "B - A = {";
+print join(", ", @intersectB_A),"}\n";
+
+
+#finds and prints A x B
+foreach $pairedA (@A){
+	foreach $pairedB (@B){
+		$pair = "($pairedA, $pairedB)";
+		push @timesAxB, $pair;
+		
+	}
+}
+
+print "A x B = {";
+print join(", ", @timesAxB),"}\n";
+
+
+#finds and prints B x A
+foreach $pair4B (@B){
+	foreach $pair4A (@A){
+		$pair2 = "($pair4B, $pair4A)";
+		push @timesBxA, $pair2;
+		
+	}
+}
+
+print "B x A = {";
+print join(", ", @timesBxA),"}\n";
