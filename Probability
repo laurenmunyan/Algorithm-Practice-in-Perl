@@ -1,0 +1,278 @@
+use warnings;
+
+#made into a subroutine for easy use later
+sub acceptBid{
+	#bid = random number between 500 and 2500
+
+	$offerBid = $offermin + int(rand($offermax - $offermin +1));
+
+	#tell user: you've been offered (bid) for this painting. You paid (say the amount) for it
+	print "You've been offered $offerBid for this painting. You paid $paid[$k] for it.\n";
+
+	#do you accept? (y/n)
+	print "Do you accept? (y/n) \n";
+	$acceptance = <STDIN>;
+	chomp $acceptance;
+}
+
+#I made it into a subroutine for easy use later
+sub run {
+
+	print "Welcome to the Gallery!\n";
+
+	print "You may bid on up to five valuable paintings.\n";
+	print "Start with 5000 dollars.\n";
+	print "Then, try to sell your collection for as much as possible.\n";
+
+	#buying phase
+
+	$cash = 5000;
+	$userPaintings = 0;
+	$minimum = 150;
+	$maximum = 1150;
+	$count = 1;
+	@paid = ();
+
+
+	for( $i = 0; $i < 5; $i++) {
+		print "You have $cash dollars left.\n";
+		print "Painting number $count is up for sale.\n";
+
+		$enemyBid = $minimum + int(rand($maximum - $minimum +1));
+
+		print "How much would you like to bid?\n";
+		$bid = <STDIN>;
+		chomp $bid;
+		
+
+		if ($bid > $cash) {
+			print "Sorry, you don't have enough money. Try again.\n";
+			print "How much would you like to bid?\n";
+			$bid = <STDIN>;
+			chomp $bid;
+		}
+
+		elsif ($bid >= $enemyBid){
+			print "You bought it!\n";
+			print "Someone else bid $enemyBid. ";
+			$userPaintings++;
+			$cash = $cash - $bid;
+			push @paid, $bid; 
+		}
+
+		elsif ($bid < $enemyBid) {
+			print "Someone else bid $enemyBid. ";
+			print "Sorry, you lost it.\n";
+		}
+		$count++;
+	}
+
+	#selling phase
+
+	$offermax = 2500;
+	$offermin = 500;
+
+	for( $j = 1; $j <= $userPaintings; $j++){
+		print "You may now sell your painting number $j.\n";
+
+		#Randomly pick a number (between 1 and 6) representing how many offers the user will get. 
+		#Don't tell this number to the user!
+
+		$offers = 1 + int(rand(6));
+
+		#loop that many times
+	
+		for( $k = 0; $k < $offers; $k++) {
+	
+  			acceptBid();
+			
+			# if yes, cash += bid, go to next painting in your collection
+
+			if ($acceptance eq "y") {
+				$cash += $offerBid;
+				last;
+			}
+
+			#if no more offers on this painting:
+			# Tell user: Sorry, that was the last offer. You have to keep that painting!
+			# else go to next offer on that painting
+
+			if ( $k == $offers - 1){
+				print "Sorry, that was the last offer. You have to keep that one!\n";
+			}
+		}
+	
+	}
+
+	#endgame:
+	#tell user: you started with 5000. You finish with $(cash)
+	print "You started with 5000 dollars. You finish with $cash.\n";
+	#Play again? (y/n)
+
+	
+}
+
+#runs the subroutine
+run();
+
+print "Play again? (y/n)\n";
+	$again = <STDIN>;
+	chomp $again;
+
+#If yes, reset variables and restart.
+while( $again eq "y"){
+	run();
+	print "Play again? (y/n)\n";
+	$again = <STDIN>;
+	chomp $again;
+
+	}
+#else, exit program.
+if ($again eq "n") {
+	exit 1;
+}
+
+
+
+
+
+==================================
+
+# Extra: make the game restart with the balance you ended with:
+
+use warnings;
+
+
+$cash = 5000;
+
+#made into a subroutine for easy use later
+sub acceptBid{
+	#bid = random number between 500 and 2500
+
+	$offerBid = $offermin + int(rand($offermax - $offermin +1));
+
+	#tell user: you've been offered (bid) for this painting. You paid (say the amount) for it
+	print "You've been offered $offerBid for this painting. You paid $paid[$k] for it.\n";
+
+	#do you accept? (y/n)
+	print "Do you accept? (y/n) \n";
+	$acceptance = <STDIN>;
+	chomp $acceptance;
+}
+
+#I made it into a subroutine for easy use later
+sub run {
+
+	print "Welcome to the Gallery!\n";
+
+	print "You may bid on up to five valuable paintings.\n";
+	print "Start with $cash dollars.\n";
+	print "Then, try to sell your collection for as much as possible.\n";
+
+	#buying phase
+
+	$balance = $cash;
+
+	$userPaintings = 0;
+	$minimum = 150;
+	$maximum = 1150;
+	$count = 1;
+	@paid = ();
+
+	for( $i = 0; $i < 5; $i++) {
+		print "You have $cash dollars left.\n";
+		print "Painting number $count is up for sale.\n";
+
+		$enemyBid = $minimum + int(rand($maximum - $minimum +1));
+
+		print "How much would you like to bid?\n";
+		$bid = <STDIN>;
+		chomp $bid;
+
+		if ($bid > $cash) {
+			print "Sorry, you don't have enough money. Try again.\n";
+			print "How much would you like to bid?\n";
+			$bid = <STDIN>;
+			chomp $bid;
+		}
+
+		elsif ($bid >= $enemyBid){
+			print "You bought it!\n";
+			$userPaintings++;
+			$cash = $cash - $bid;
+			push @paid, $bid; 
+		}
+
+		elsif ($bid < $enemyBid) {
+			print "Someone else bid $enemyBid. ";
+			print "Sorry, you lost it.\n";
+		}
+		$count++;
+	}
+
+	#selling phase
+
+	$offermax = 2500;
+	$offermin = 500;
+
+	for( $j = 1; $j <= $userPaintings; $j++){
+		print "You may now sell your painting number $j.\n";
+
+		#Randomly pick a number (between 1 and 6) representing how many offers the user will get. 
+		#Don't tell this number to the user!
+
+		$offers = 1 + int(rand(6));
+
+		#loop that many times
+	
+		for( $k = 0; $k < $offers; $k++) {
+	
+  			acceptBid();
+			
+			# if yes, cash += bid, go to next painting in your collection
+
+			if ($acceptance eq "y") {
+				$cash += $offerBid;
+				last;
+			}
+
+			#if no more offers on this painting:
+			# Tell user: Sorry, that was the last offer. You have to keep that painting!
+			# else go to next offer on that painting
+
+			if ( $k == $offers - 1){
+				print "Sorry, that was the last offer. You have to keep that one!\n";
+			}
+		}
+	
+	}
+
+	#endgame:
+	#tell user: you started with 5000. You finish with (cash)
+	print "You started with $balance dollars. You finish with $cash.\n";
+	#Play again? (y/n)	
+}
+
+#runs the subroutine
+run();
+
+print "Play again? (y/n)\n";
+	$again = <STDIN>;
+	chomp $again;
+
+#If yes, reset variables and restart.
+while( $again eq "y"){
+	run();
+	print "Play again? (y/n)\n";
+	$again = <STDIN>;
+	chomp $again;
+	}
+
+#else, exit program.
+if ($again eq "n") {
+	exit 1;
+}
+
+
+
+
